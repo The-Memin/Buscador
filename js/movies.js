@@ -33,28 +33,32 @@ $(document).ready(function () {
 
     $("#txtbusca").keyup(function (e) { 
         $(".card").remove();
-        getMatches($("#txtbusca").val())
-        matches.forEach(match => {
-            $("#salida").append(`<div class="card col">
-            <img class="card-img-top" src="..." alt="Card image cap">
-            <div class="card-body">
-            <h5 class="card-text card-title">${match.title}</h5>
-            <ul>
-                <li class="ranking">Ranking:${match.ranking} </li>
-                <li>Year:${match.year}</li>
-                <li>Gender:${match.gender}</li>
-                <li>Duration:${match.duration}</li>
-                <li><a href="${match.url}">Synopsis</a></li>
-            </ul>
-            </div>`);
-        });
+        $(".no-found").remove();
+        getMatches($("#txtbusca").val().toLowerCase())
+        if (matches.length > 0) {
+            matches.forEach(match => {
+                $("#salida").append(`<div class="card col">
+                
+                <div class="card-body">
+                <h5 class="card-text card-title">${match.title}</h5>
+                <ul>
+                    <li class="ranking">Ranking: <b>${match.ranking}</b></li>
+                    <li>Year:${match.year}</li>
+                    <li>Gender:${match.gender}</li>
+                    <li>Duration:${match.duration}</li>
+                    <li><a href="${match.url}">Synopsis</a></li>
+                </ul>
+                </div>`);
+            });
+        }else{
+            $("#salida").append(`<h4 class="no-found">No se encontraron coincidencias</h4>`);
+        }
     });
 
     function getMatches(string){
         matches = []
         movies.forEach(movie => {
-            if(movie.title.toLowerCase().indexOf(string) !== -1){
-                console.log(movie)
+            if(movie.title.toLowerCase().indexOf(string) !== -1 && string!= "" && string!=" "){
                 matches.push(movie)
             }
         });
